@@ -1,0 +1,1350 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block social-content %}
+        <style>
+            .social-container {
+                background-color: #f0f2f5;
+                min-height: 100vh;
+            }
+            
+            .left-sidebar {
+                position: sticky;
+                top: 140px;
+                height: calc(100vh - 140px);
+                overflow-y: auto;
+            }
+            
+            .right-sidebar {
+                position: sticky;
+                top: 140px;
+                height: calc(100vh - 140px);
+                overflow-y: auto;
+            }
+            
+            .main-content {
+                max-width: 680px;
+                margin: 0 auto;
+            }
+            
+            .post-card {
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                margin-bottom: 20px;
+                overflow: hidden;
+            }
+            
+            .post-header {
+                padding: 15px 20px;
+                border-bottom: 1px solid #e4e6ea;
+            }
+            
+            .post-content {
+                padding: 0 20px 15px;
+            }
+            
+            .post-image {
+                width: 100%;
+                height: 300px;
+                object-fit: cover;
+                background: #fff;
+            }
+            
+            .post-actions {
+                padding: 10px 20px;
+                border-top: 1px solid #e4e6ea;
+                display: flex;
+                justify-content: space-around;
+            }
+            
+            .action-btn {
+                background: none;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 6px;
+                cursor: pointer;
+                color: #65676b;
+                font-weight: 600;
+                transition: all 0.2s;
+                flex: 1;
+                text-align: center;
+            }
+            
+            .action-btn:hover {
+                background-color: #f0f2f5;
+            }
+            
+            .action-btn.liked {
+                color: #1877f2;
+            }
+            
+            .sidebar-menu {
+                list-style: none;
+                padding: 0;
+            }
+            
+            .sidebar-menu li {
+                padding: 8px 0;
+            }
+            
+            .sidebar-menu li a {
+                text-decoration: none;
+                color: #050505;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                padding: 8px 12px;
+                border-radius: 8px;
+                transition: background-color 0.2s;
+            }
+            
+            .sidebar-menu li a:hover {
+                background-color: #e4e6ea;
+                color: #050505;
+            }
+            
+            .sidebar-menu li a i {
+                margin-right: 12px;
+                width: 20px;
+            }
+            
+            .profile-card {
+                background: white;
+                border-radius: 10px;
+                padding: 20px;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .create-post {
+                background: white;
+                border-radius: 10px;
+                padding: 20px;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .create-post-input {
+                background-color: #f0f2f5;
+                border: none;
+                border-radius: 25px;
+                padding: 12px 20px;
+                width: 100%;
+                resize: none;
+                outline: none;
+            }
+            
+            .create-post-actions {
+                display: flex;
+                justify-content: space-around;
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1px solid #e4e6ea;
+            }
+            
+            .online-friends {
+                background: white;
+                border-radius: 10px;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .friend-item {
+                display: flex;
+                align-items: center;
+                padding: 8px 0;
+                cursor: pointer;
+                border-radius: 8px;
+                padding: 8px 12px;
+                transition: background-color 0.2s;
+            }
+            
+            .friend-item:hover {
+                background-color: #f0f2f5;
+            }
+            
+            .friend-avatar {
+                position: relative;
+                margin-right: 12px;
+            }
+            
+            .online-indicator {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 12px;
+                height: 12px;
+                background-color: #42b883;
+                border: 2px solid white;
+                border-radius: 50%;
+            }
+            
+            .story-container {
+                display: flex;
+                gap: 15px;
+                margin-bottom: 20px;
+                overflow-x: auto;
+                padding: 10px 0;
+            }
+            
+            .story-item {
+                min-width: 120px;
+                height: 200px;
+                border-radius: 10px;
+                position: relative;
+                cursor: pointer;
+                overflow: hidden;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .story-bg {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                background: #fff;
+                transition: transform 0.2s;
+            }
+            
+            .story-item:hover .story-bg {
+                transform: scale(1.05);
+            }
+            
+            .story-overlay {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: linear-gradient(transparent, rgba(0,0,0,0.7));
+                padding: 15px 10px 10px;
+                color: white;
+                font-size: 12px;
+                font-weight: 600;
+            }
+            
+            .create-story {
+                background: white;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                border: 2px dashed #e4e6ea;
+                transition: all 0.2s;
+            }
+            
+            .create-story:hover {
+                border-color: #1877f2;
+                background-color: #f0f8ff;
+            }
+            
+            .create-story i {
+                font-size: 24px;
+                color: #1877f2;
+                margin-bottom: 8px;
+            }
+            
+            .create-story span {
+                color: #050505;
+                font-weight: 600;
+                font-size: 12px;
+                text-align: center;
+            }
+            
+            .comment-section {
+                border-top: 1px solid #e4e6ea;
+                padding: 15px 20px 0;
+            }
+            
+            .comment-input {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+            
+            .comment-input input {
+                flex: 1;
+                background-color: #f0f2f5;
+                border: none;
+                border-radius: 20px;
+                padding: 8px 15px;
+                outline: none;
+            }
+            
+            .comment {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .comment-content {
+                background-color: #f0f2f5;
+                border-radius: 16px;
+                padding: 8px 12px;
+                flex: 1;
+            }
+            
+            .comment-author {
+                font-weight: 600;
+                font-size: 13px;
+                margin-bottom: 2px;
+            }
+            
+            .comment-text {
+                font-size: 14px;
+            }
+        </style>
+
+        <!-- Social Network Content Start -->
+        <div class="social-container" style="padding-top: 140px;">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Left Sidebar -->
+                    <div class="col-lg-3 d-none d-lg-block">
+                        <div class="left-sidebar ">
+                            {% if user.is_authenticated %}
+                                <!-- User Profile Card -->
+                                <div class="profile-card border border-primary rounded p-3" style="margin-top: 20px;">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img src="{% static 'img/user/default_avatar.jpg' %}" class="rounded-circle me-3" width="50" height="50" alt="Profile" style="object-fit: cover;">
+                                        <div>
+                                            <h6 class="mb-1">{{ user.username }}</h6>
+                                            <small class="text-muted">こんにちは</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <strong>125</strong><br><small>Posts</small>
+                                            </div>
+                                            <div class="col-4">
+                                                <strong>2.5K</strong><br><small>Friends</small>
+                                            </div>
+                                            <div class="col-4">
+                                                <strong>180</strong><br><small>Following</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <!-- Navigation Menu -->
+                            <div class="profile-card border border-primary rounded p-3">
+                                <ul class="sidebar-menu">
+                                    <li><a href="#"><i class="fas fa-home text-primary"></i> News Feed</a></li>
+                                    <li><a href="#"><i class="fas fa-users text-success"></i> Friends</a></li>
+                                    <li><a href="#"><i class="fas fa-images text-info"></i> Photos</a></li>
+                                    <li><a href="#"><i class="fas fa-utensils text-warning"></i> Recipes</a></li>
+                                    <li><a href="#"><i class="fas fa-calendar text-danger"></i> Events</a></li>
+                                    <li><a href="#"><i class="fas fa-users text-secondary"></i> Groups</a></li>
+                                    
+                                    <li><a href="#"><i class="fas fa-bookmark text-info"></i> Saved</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="col-lg-6 col-md-8">
+                        <div class="main-content">
+                            <!-- Stories Section -->
+                            <div class="story-container">
+                                <div class="story-item create-story" onclick="openCreateStoryModal()">
+                                    <i class="fas fa-plus"></i>
+                                    <span>Create<br>Story</span>
+                                </div>
+
+                                <!-- Create Story Modal -->
+                                <div class="modal fade" id="createStoryModal" tabindex="-1" aria-labelledby="createStoryModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="createStoryModalLabel">Create Story</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <img src="{% static 'img/user/default_avatar.jpg' %}" class="rounded-circle me-3" width="40" height="40" alt="Profile" style="object-fit: cover;">
+                                                    <div>
+                                                        <h6 class="mb-0">{{ user.username }}</h6>
+                                                        <small class="text-muted">Your story will be visible for 24 hours</small>
+                                                    </div>
+                                                </div>
+                                                
+                                                <form id="createStoryForm">
+                                                    <div id="storyPreview" class="mb-3" style="display: none;">
+                                                        <div class="position-relative story-preview-container">
+                                                            <div id="storyMediaContainer" class="text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; height: 400px; display: flex; align-items: center; justify-content: center; position: relative;">
+                                                                <img id="previewStoryImage" class="img-fluid" style="max-height: 380px; max-width: 100%; border-radius: 15px; object-fit: cover; display: none;">
+                                                                <video id="previewStoryVideo" class="img-fluid" style="max-height: 380px; max-width: 100%; border-radius: 15px; object-fit: cover; display: none;" controls></video>
+                                                                <div id="storyTextOverlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 24px; font-weight: bold; text-align: center; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); white-space: pre-line; display: none;"></div>
+                                                            </div>
+                                                            <button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2" onclick="removeStoryMedia()">
+                                                                <i class="fas fa-times"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <input type="file" id="storyImageInput" accept="image/*,video/*" style="display: none;" onchange="previewStoryMedia()">
+                                                    
+                                                    <div class="mb-3">
+                                                        <textarea class="form-control" id="storyText" rows="3" placeholder="Add text to your story..." maxlength="200"></textarea>
+                                                        <div class="text-end mt-1">
+                                                            <small class="text-muted"><span id="textCount">0</span>/200</small>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="row mb-3">
+                                                        <div class="col-12">
+                                                            <h6>Story Options:</h6>
+                                                            <div class="d-flex gap-3 flex-wrap">
+                                                                <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('storyImageInput').click()">
+                                                                    <i class="fas fa-camera me-2"></i>Photo/Video
+                                                                </button>
+                                                                <button type="button" class="btn btn-outline-success" onclick="createTextStory()">
+                                                                    <i class="fas fa-font me-2"></i>Text Only
+                                                                </button>
+                                                                <button type="button" class="btn btn-outline-warning" onclick="changeStoryBackground()">
+                                                                    <i class="fas fa-palette me-2"></i>Background
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Text Color:</label>
+                                                        <div class="d-flex gap-2">
+                                                            <button type="button" class="btn btn-sm color-btn" style="background-color: white; border: 1px solid #ccc;" onclick="changeTextColor('white')"></button>
+                                                            <button type="button" class="btn btn-sm color-btn" style="background-color: black;" onclick="changeTextColor('black')"></button>
+                                                            <button type="button" class="btn btn-sm color-btn" style="background-color: red;" onclick="changeTextColor('red')"></button>
+                                                            <button type="button" class="btn btn-sm color-btn" style="background-color: blue;" onclick="changeTextColor('blue')"></button>
+                                                            <button type="button" class="btn btn-sm color-btn" style="background-color: green;" onclick="changeTextColor('green')"></button>
+                                                            <button type="button" class="btn btn-sm color-btn" style="background-color: yellow;" onclick="changeTextColor('yellow')"></button>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Privacy:</label>
+                                                        <select class="form-select" id="storyPrivacy">
+                                                            <option value="public">Public</option>
+                                                            <option value="friends">Friends Only</option>
+                                                            <option value="close_friends">Close Friends</option>
+                                                        </select>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn btn-primary" onclick="submitStory()">Share Story</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <script>
+                                // Định nghĩa biến avatar URL để dùng trong JS
+                                const defaultAvatarUrl = "{% static 'img/user/default_avatar.jpg' %}";
+                                // Story-related JavaScript functions
+                                let storyBackgrounds = [
+                                    'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                    'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                                    'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                                    'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                                    'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                                    'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+                                ];
+                                let currentBgIndex = 0;
+                                let currentTextColor = 'white';
+
+                                function openCreateStoryModal() {
+                                    const modal = new bootstrap.Modal(document.getElementById('createStoryModal'));
+                                    modal.show();
+                                }
+
+                                function previewStoryMedia() {
+                                    const fileInput = document.getElementById('storyImageInput');
+                                    const file = fileInput.files[0];
+                                    const storyPreview = document.getElementById('storyPreview');
+                                    const previewImage = document.getElementById('previewStoryImage');
+                                    const previewVideo = document.getElementById('previewStoryVideo');
+                                    const textOverlay = document.getElementById('storyTextOverlay');
+                                    
+                                    if (file) {
+                                        const reader = new FileReader();
+                                        reader.onload = function(e) {
+                                            storyPreview.style.display = 'block';
+                                            
+                                            if (file.type.startsWith('image/')) {
+                                                previewImage.src = e.target.result;
+                                                previewImage.style.display = 'block';
+                                                previewVideo.style.display = 'none';
+                                            } else if (file.type.startsWith('video/')) {
+                                                previewVideo.src = e.target.result;
+                                                previewVideo.style.display = 'block';
+                                                previewImage.style.display = 'none';
+                                            }
+                                            
+                                            // Show text overlay if there's text
+                                            const storyText = document.getElementById('storyText').value;
+                                            if (storyText.trim()) {
+                                                textOverlay.textContent = storyText;
+                                                textOverlay.style.display = 'block';
+                                            }
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }
+                                }
+
+                                function createTextStory() {
+                                    const storyPreview = document.getElementById('storyPreview');
+                                    const previewImage = document.getElementById('previewStoryImage');
+                                    const previewVideo = document.getElementById('previewStoryVideo');
+                                    const textOverlay = document.getElementById('storyTextOverlay');
+                                    const storyText = document.getElementById('storyText').value;
+                                    
+                                    if (storyText.trim()) {
+                                        storyPreview.style.display = 'block';
+                                        previewImage.style.display = 'none';
+                                        previewVideo.style.display = 'none';
+                                        textOverlay.textContent = storyText;
+                                        textOverlay.style.display = 'block';
+                                        textOverlay.style.color = currentTextColor;
+                                    } else {
+                                        alert('Please enter some text for your story!');
+                                    }
+                                }
+
+                                function changeStoryBackground() {
+                                    const mediaContainer = document.getElementById('storyMediaContainer');
+                                    currentBgIndex = (currentBgIndex + 1) % storyBackgrounds.length;
+                                    mediaContainer.style.background = storyBackgrounds[currentBgIndex];
+                                }
+
+                                function changeTextColor(color) {
+                                    currentTextColor = color;
+                                    const textOverlay = document.getElementById('storyTextOverlay');
+                                    if (textOverlay.style.display === 'block') {
+                                        textOverlay.style.color = color;
+                                    }
+                                    
+                                    // Update color buttons
+                                    document.querySelectorAll('.color-btn').forEach(btn => {
+                                        btn.style.border = '1px solid #ccc';
+                                    });
+                                    event.target.style.border = '3px solid #007bff';
+                                }
+
+                                function removeStoryMedia() {
+                                    const storyPreview = document.getElementById('storyPreview');
+                                    const previewImage = document.getElementById('previewStoryImage');
+                                    const previewVideo = document.getElementById('previewStoryVideo');
+                                    const textOverlay = document.getElementById('storyTextOverlay');
+                                    const fileInput = document.getElementById('storyImageInput');
+                                    
+                                    storyPreview.style.display = 'none';
+                                    previewImage.src = '';
+                                    previewImage.style.display = 'none';
+                                    previewVideo.src = '';
+                                    previewVideo.style.display = 'none';
+                                    textOverlay.style.display = 'none';
+                                    fileInput.value = '';
+                                }
+
+                                function submitStory() {
+                                    const storyText = document.getElementById('storyText').value;
+                                    const fileInput = document.getElementById('storyImageInput');
+                                    const privacy = document.getElementById('storyPrivacy').value;
+                                    
+                                    if (!storyText.trim() && !fileInput.files[0]) {
+                                        alert('Please add some content to your story!');
+                                        return;
+                                    }
+                                    
+                                    // Create FormData for story submission
+                                    const formData = new FormData();
+                                    formData.append('text', storyText);
+                                    formData.append('privacy', privacy);
+                                    formData.append('background', storyBackgrounds[currentBgIndex]);
+                                    formData.append('text_color', currentTextColor);
+                                    
+                                    let imageDataUrl = null;
+                                    if (fileInput.files[0]) {
+                                        formData.append('media', fileInput.files[0]);
+                                        // Đọc file ảnh để hiển thị lên story mới
+                                        const reader = new FileReader();
+                                        reader.onload = function(e) {
+                                            imageDataUrl = e.target.result;
+                                            // Add the new story to the story container (simulate)
+                                            addNewStoryToFeed(storyText, imageDataUrl);
+                                        };
+                                        reader.readAsDataURL(fileInput.files[0]);
+                                    } else {
+                                        // Không có ảnh, chỉ thêm story text
+                                        addNewStoryToFeed(storyText, null);
+                                    }
+                                    
+                                    // Simulate story creation (replace with actual API call)
+                                    console.log('Creating story with data:', {
+                                        text: storyText,
+                                        privacy: privacy,
+                                        hasMedia: !!fileInput.files[0],
+                                        background: storyBackgrounds[currentBgIndex],
+                                        textColor: currentTextColor
+                                    });
+                                    
+                                    // Show success message
+                                    alert('Story created successfully!');
+                                    
+                                    // Close modal and reset form
+                                    const modal = bootstrap.Modal.getInstance(document.getElementById('createStoryModal'));
+                                    modal.hide();
+                                    resetStoryForm();
+                                }
+
+                                function resetStoryForm() {
+                                    document.getElementById('createStoryForm').reset();
+                                    document.getElementById('storyPreview').style.display = 'none';
+                                    document.getElementById('previewStoryImage').src = '';
+                                    document.getElementById('previewStoryVideo').src = '';
+                                    document.getElementById('storyTextOverlay').style.display = 'none';
+                                    document.getElementById('textCount').textContent = '0';
+                                    currentBgIndex = 0;
+                                    currentTextColor = 'white';
+                                }
+
+                                function addNewStoryToFeed(text, imageUrl) {
+                                    const storyContainer = document.querySelector('.story-container');
+                                    const newStory = document.createElement('div');
+                                    newStory.className = 'story-item';
+                                    let storyBgHtml = '';
+                                    if (imageUrl) {
+                                        // Nếu có ảnh, hiển thị ảnh làm nền story
+                                        storyBgHtml = `<img src="${imageUrl}" class="story-bg" style="width: 100%; height: 100%; object-fit: cover; background: #fff; border-radius: 15px;">`;
+                                    } else {
+                                        // Nếu không có ảnh, hiển thị text với background màu
+                                        storyBgHtml = `<div class=\"story-bg\" style=\"background: ${storyBackgrounds[currentBgIndex]}; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: ${currentTextColor}; font-weight: bold;\"><span>${text ? text : 'My Story'}</span></div>`;
+                                    }
+                                    newStory.innerHTML = `
+                                        ${storyBgHtml}
+                                        <div class=\"story-overlay\">
+                                            <img src=\"${defaultAvatarUrl}\" class=\"rounded-circle me-2\" width=\"24\" height=\"24\" style=\"object-fit: cover;\">
+                                        </div>
+                                    `;
+                                    // Insert after the create story button
+                                    const createStoryItem = document.querySelector('.create-story');
+                                    createStoryItem.parentNode.insertBefore(newStory, createStoryItem.nextSibling);
+                                }
+
+                                // Text counter for story text
+                                document.getElementById('storyText').addEventListener('input', function() {
+                                    const textCount = document.getElementById('textCount');
+                                    const currentLength = this.value.length;
+                                    textCount.textContent = currentLength;
+                                    
+                                    // Update text overlay in real-time
+                                    const textOverlay = document.getElementById('storyTextOverlay');
+                                    if (document.getElementById('storyPreview').style.display === 'block') {
+                                        textOverlay.textContent = this.value;
+                                        if (this.value.trim()) {
+                                            textOverlay.style.display = 'block';
+                                        } else {
+                                            textOverlay.style.display = 'none';
+                                        }
+                                    }
+                                });
+                            </script>
+                                <div class="story-item">
+                                    <img src="https://cdn.asiastreetfood.com/uploads/Vietnam-Pho-Bo-Hanoi3-9277-2.jpg?strip=all&lossy=1&quality=80&ssl=1" class="story-bg" alt="Story">
+                                    <div class="story-overlay">
+                                        <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle me-2" width="24" height="24">
+                                        Yuki Tanaka
+                                    </div>
+                                </div>
+                                <div class="story-item">
+                                    <img src="https://cdn.antoursvietnam.com/wp-content/uploads/2024/04/Top-5-best-Banh-Mi-in-Saigon.jpg" class="story-bg" alt="Story">
+                                    <div class="story-overlay">
+                                        <img src="https://randomuser.me/api/portraits/men/45.jpg" class="rounded-circle me-2" width="24" height="24">
+                                        Hiroshi Sato
+                                    </div>
+                                </div>
+                                <div class="story-item">
+                                    <img src="https://thumbs.dreamstime.com/z/bowl-bun-cha-grilled-pork-noodles-side-side-bowl-bun-cha-grilled-pork-noodles-side-side-created-304089139.jpg?w=992" class="story-bg" alt="Story">
+                                    <div class="story-overlay">
+                                        <img src="https://randomuser.me/api/portraits/women/32.jpg" class="rounded-circle me-2" width="24" height="24">
+                                        Mai Nguyen
+                                    </div>
+                                </div>
+                                <div class="story-item">
+                                    <img src="https://www.vietnam-travelonline.com/wp-content/uploads/2023/11/50d669e4faa74612bbaed118690d6cd6-1-scaled.jpg" class="story-bg" alt="Story">
+                                    <div class="story-overlay">
+                                        <img src="https://randomuser.me/api/portraits/women/55.jpg" class="rounded-circle me-2" width="24" height="24">
+                                        Emiko Watanabe
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Create Post -->
+                            <div class="create-post">
+                                <div class="d-flex align-items-center mb-3">
+                                   <img src="{% static 'img/user/default_avatar.jpg' %}" class="rounded-circle me-3" width="40" height="40" alt="Profile" style="object-fit: cover;">
+                                    <textarea class="create-post-input" rows="1" placeholder="What's on your mind, {{ user.username }}?" onclick="openCreatePostModal()"></textarea>
+                                </div>
+                                
+                            </div>
+
+                            <!-- JavaScript for Create Post -->
+                            <script>
+                                function openCreatePostModal(type = '') {
+                                    const modal = new bootstrap.Modal(document.getElementById('createPostModal'));
+                                    modal.show();
+                                    
+                                    if (type === 'photo') {
+                                        setTimeout(() => {
+                                            document.getElementById('imageInput').click();
+                                        }, 500);
+                                    }
+                                }
+
+                                function previewMedia() {
+                                    const fileInput = document.getElementById('imageInput');
+                                    const file = fileInput.files[0];
+                                    const imagePreview = document.getElementById('imagePreview');
+                                    const previewImage = document.getElementById('previewImage');
+                                    
+                                    if (file) {
+                                        const reader = new FileReader();
+                                        reader.onload = function(e) {
+                                            previewImage.src = e.target.result;
+                                            imagePreview.style.display = 'block';
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }
+                                }
+
+                                function removeImage() {
+                                    const imagePreview = document.getElementById('imagePreview');
+                                    const previewImage = document.getElementById('previewImage');
+                                    const fileInput = document.getElementById('imageInput');
+                                    
+                                    imagePreview.style.display = 'none';
+                                    previewImage.src = '';
+                                    fileInput.value = '';
+                                }
+
+                                function submitPost() {
+                                    const postContent = document.getElementById('postContent').value;
+                                    const fileInput = document.getElementById('imageInput');
+                                    
+                                    if (!postContent.trim() && !fileInput.files[0]) {
+                                        alert('Please write something or add a photo!');
+                                        return;
+                                    }
+                                    
+                                    // Create new post data
+                                    const newPost = {
+                                        content: postContent,
+                                        hasImage: !!fileInput.files[0],
+                                        timestamp: new Date()
+                                    };
+                                    
+                                    // Add new post to the feed
+                                    addNewPostToFeed(newPost);
+                                    
+                                    // Close modal and reset form
+                                    const modal = bootstrap.Modal.getInstance(document.getElementById('createPostModal'));
+                                    modal.hide();
+                                    resetCreatePostForm();
+                                    
+                                    // Show success message
+                                    showNotification('Post shared successfully!');
+                                }
+
+                                function addNewPostToFeed(postData) {
+                                    const mainContent = document.querySelector('.main-content');
+                                    const newPostElement = document.createElement('div');
+                                    newPostElement.className = 'post-card';
+                                    
+                                    const timeAgo = 'Just now';
+                                    const userAvatar = '{% static 'img/user/default_avatar.jpg' %}';
+                                    const username = '{{ user.username }}';
+                                    const postId = 'comments' + Date.now();
+                                    
+                                    newPostElement.innerHTML = `
+                                        <div class="post-header">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="${userAvatar}" class="rounded-circle me-3" width="40" height="40" alt="Profile" style="object-fit: cover;">
+                                                    <div>
+                                                        <h6 class="mb-0">${username}</h6>
+                                                        <small class="text-muted">${timeAgo} • <i class="fas fa-globe-americas"></i></small>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown">
+                                                    <button class="btn" data-bs-toggle="dropdown">
+                                                        <i class="fas fa-ellipsis-h"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit post</a></li>
+                                                        <li><a class="dropdown-item" href="#" onclick="deletePost(this)"><i class="fas fa-trash me-2"></i>Delete post</a></li>
+                                                        <li><a class="dropdown-item" href="#"><i class="fas fa-bookmark me-2"></i>Save post</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="post-content">
+                                            <p>${postData.content}</p>
+                                        </div>
+                                        ${postData.hasImage ? '<div id="newPostImage"></div>' : ''}
+                                        <div class="post-actions">
+                                            <button class="action-btn" onclick="toggleLike(this)">
+                                                <i class="fas fa-thumbs-up me-2"></i><span>Like</span>
+                                            </button>
+                                            <button class="action-btn" onclick="toggleComments('${postId}')">
+                                                <i class="fas fa-comment me-2"></i>Comment
+                                            </button>
+                                            <button class="action-btn">
+                                                <i class="fas fa-share me-2"></i>Share
+                                            </button>
+                                        </div>
+                                        <div id="${postId}" class="comment-section" style="display: none;">
+                                            <div class="comment-input">
+                                                <img src="${userAvatar}" width="40" height="40" alt="Profile" style="object-fit: cover; border-radius: 50%;">
+                                                <input type="text" placeholder="Write a comment..." onkeypress="addComment(event, '${postId}')">
+                                            </div>
+                                        </div>
+                                    `;
+                                    
+                                    // Insert after create post section
+                                    const createPost = document.querySelector('.create-post');
+                                    createPost.parentNode.insertBefore(newPostElement, createPost.nextSibling);
+                                    
+                                    // Handle image if exists
+                                    if (postData.hasImage) {
+                                        const fileInput = document.getElementById('imageInput');
+                                        const file = fileInput.files[0];
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onload = function(e) {
+                                                const imageContainer = newPostElement.querySelector('#newPostImage');
+                                                imageContainer.innerHTML = `<img src="${e.target.result}" class="post-image" alt="Posted image" style="object-fit: cover; background: #fff;">`;
+                                            };
+                                            reader.readAsDataURL(file);
+                                        }
+                                    }
+                                    
+                                    // Smooth scroll to new post
+                                    newPostElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    
+                                    // Add fade-in animation
+                                    newPostElement.style.opacity = '0';
+                                    newPostElement.style.transform = 'translateY(-20px)';
+                                    newPostElement.style.transition = 'all 0.5s ease';
+                                    
+                                    setTimeout(() => {
+                                        newPostElement.style.opacity = '1';
+                                        newPostElement.style.transform = 'translateY(0)';
+                                    }, 100);
+                                }
+
+                                function resetCreatePostForm() {
+                                    document.getElementById('postContent').value = '';
+                                    document.getElementById('imageInput').value = '';
+                                    document.getElementById('imagePreview').style.display = 'none';
+                                    document.getElementById('previewImage').src = '';
+                                }
+
+                                function deletePost(button) {
+                                    if (confirm('Are you sure you want to delete this post?')) {
+                                        const postCard = button.closest('.post-card');
+                                        postCard.style.transition = 'all 0.3s ease';
+                                        postCard.style.opacity = '0';
+                                        postCard.style.transform = 'translateX(-100%)';
+                                        
+                                        setTimeout(() => {
+                                            postCard.remove();
+                                            showNotification('Post deleted successfully!');
+                                        }, 300);
+                                    }
+                                }
+
+                                function showNotification(message) {
+                                    const notification = document.createElement('div');
+                                    notification.className = 'alert alert-success position-fixed';
+                                    notification.style.cssText = `
+                                        top: 20px;
+                                        right: 20px;
+                                        z-index: 9999;
+                                        min-width: 300px;
+                                        opacity: 0;
+                                        transform: translateX(100%);
+                                        transition: all 0.3s ease;
+                                    `;
+                                    notification.innerHTML = `
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-check-circle me-2"></i>
+                                            ${message}
+                                            <button type="button" class="btn-close ms-auto" onclick="this.parentNode.parentNode.remove()"></button>
+                                        </div>
+                                    `;
+                                    
+                                    document.body.appendChild(notification);
+                                    
+                                    setTimeout(() => {
+                                        notification.style.opacity = '1';
+                                        notification.style.transform = 'translateX(0)';
+                                    }, 100);
+                                    
+                                    setTimeout(() => {
+                                        notification.style.opacity = '0';
+                                        notification.style.transform = 'translateX(100%)';
+                                        setTimeout(() => notification.remove(), 300);
+                                    }, 3000);
+                                }
+
+                                // Auto-expand textarea in create post
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const textarea = document.querySelector('.create-post-input');
+                                    if (textarea) {
+                                        textarea.addEventListener('input', function() {
+                                            this.style.height = 'auto';
+                                            this.style.height = (this.scrollHeight) + 'px';
+                                        });
+                                    }
+                                });
+                            </script>
+
+                            <!-- Create Post Modal -->
+                            <div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="createPostModalLabel">Create Post</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <img src="{% static 'img/user/default_avatar.jpg' %}" class="rounded-circle me-3" width="40" height="40" alt="Profile" style="object-fit: cover;">
+                                                <div>
+                                                    <h6 class="mb-0">{{ user.username }}</h6>
+                                                    <select class="form-select form-select-sm mt-1" style="width: auto;">
+                                                        <option><i class="fas fa-globe"></i> Public</option>
+                                                        <option><i class="fas fa-users"></i> Friends</option>
+                                                        <option><i class="fas fa-lock"></i> Only me</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
+                                            <form id="createPostForm">
+                                                <textarea class="form-control border-0 mb-3" rows="4" id="postContent" placeholder="What's on your mind, {{ user.username }}?" style="resize: none; font-size: 18px;"></textarea>
+                                                
+                                                <div id="imagePreview" class="mb-3" style="display: none;">
+                                                    <div class="position-relative">
+                                                        <img id="previewImage" class="img-fluid rounded" style="max-height: 300px; width: 100%; object-fit: cover;">
+                                                        <button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2" onclick="removeImage()">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                                <input type="file" id="imageInput" accept="image/*,video/*" style="display: none;" onchange="previewMedia()">
+                                                
+                                                <div class="border rounded p-3">
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <span>Add to your post</span>
+                                                    </div>
+                                                    <div class="d-flex gap-2">
+                                                        <button type="button" class="btn btn-light rounded-circle" onclick="document.getElementById('imageInput').click()" title="Photo/Video">
+                                                            <i class="fas fa-images text-success"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-light rounded-circle" title="Tag Friends">
+                                                            <i class="fas fa-user-tag text-primary"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-light rounded-circle" title="Feeling/Activity">
+                                                            <i class="fas fa-smile text-warning"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-light rounded-circle" title="Check In">
+                                                            <i class="fas fa-map-marker-alt text-danger"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary w-100" onclick="submitPost()">Post</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Posts Feed -->
+                            <!-- Post 1 -->
+                            <div class="post-card">
+                                <div class="post-header">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle me-3" width="40" height="40" alt="Profile">
+                                            <div>
+                                                <h6 class="mb-0">Yuki Tanaka</h6>
+                                                <small class="text-muted">2 hours ago • <i class="fas fa-globe-americas"></i></small>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown">
+                                            <button class="btn" data-bs-toggle="dropdown">
+                                                <i class="fas fa-ellipsis-h"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"><i class="fas fa-bookmark me-2"></i>Save post</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>Report post</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>Just finished making the most amazing Pho Bo! 🍜 The broth simmered for 12 hours and the result was incredible. Using Japanese beef really made a difference! Thanks to VietJap for the authentic recipe. #PhoLove #VietnameseFood #TokyoEats</p>
+                                </div>
+                                <img src="https://cdn.asiastreetfood.com/uploads/Vietnam-Pho-Bo-Hanoi3-9277-2.jpg?strip=all&lossy=1&quality=80&ssl=1" class="post-image" alt="Pho Bo">
+                                <div class="post-actions">
+                                    <button class="action-btn" onclick="toggleLike(this)">
+                                        <i class="fas fa-thumbs-up me-2"></i><span>Like</span>
+                                    </button>
+                                    <button class="action-btn" onclick="toggleComments('comments1')">
+                                        <i class="fas fa-comment me-2"></i>Comment
+                                    </button>
+                                    <button class="action-btn">
+                                        <i class="fas fa-share me-2"></i>Share
+                                    </button>
+                                </div>
+                                <div id="comments1" class="comment-section" style="display: none;">
+                                    <div class="comment-input">
+                                        <img src="https://randomuser.me/api/portraits/men/22.jpg" class="rounded-circle" width="32" height="32" alt="Profile">
+                                        <input type="text" placeholder="Write a comment..." onkeypress="addComment(event, 'comments1')">
+                                    </div>
+                                    <div class="comment">
+                                        <img src="https://randomuser.me/api/portraits/men/45.jpg" class="rounded-circle" width="32" height="32" alt="Profile">
+                                        <div class="comment-content">
+                                            <div class="comment-author">Hiroshi Sato</div>
+                                            <div class="comment-text">Looks absolutely delicious! Can you share the recipe for the broth?</div>
+                                        </div>
+                                    </div>
+                                    <div class="comment">
+                                        <img src="https://randomuser.me/api/portraits/women/32.jpg" class="rounded-circle" width="32" height="32" alt="Profile">
+                                        <div class="comment-content">
+                                            <div class="comment-author">Mai Nguyen</div>
+                                            <div class="comment-text">Perfect! This is exactly how we make it in Vietnam 👍</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Post 2 -->
+                            <div class="post-card">
+                                <div class="post-header">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://randomuser.me/api/portraits/men/45.jpg" class="rounded-circle me-3" width="40" height="40" alt="Profile">
+                                            <div>
+                                                <h6 class="mb-0">Hiroshi Sato</h6>
+                                                <small class="text-muted">5 hours ago • <i class="fas fa-globe-americas"></i></small>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown">
+                                            <button class="btn" data-bs-toggle="dropdown">
+                                                <i class="fas fa-ellipsis-h"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"><i class="fas fa-bookmark me-2"></i>Save post</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>Report post</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>Weekend project: Making fresh Banh Mi! 🥖 Found the perfect baguettes at the local Japanese bakery. The fusion of Vietnamese flavors with Japanese ingredients creates something truly special. Who wants to try this recipe? #BanhMi #WeekendCooking #FusionFood</p>
+                                </div>
+                                <img src="https://cdn.antoursvietnam.com/wp-content/uploads/2024/04/Top-5-best-Banh-Mi-in-Saigon.jpg" class="post-image" alt="Banh Mi">
+                                <div class="post-actions">
+                                    <button class="action-btn" onclick="toggleLike(this)">
+                                        <i class="fas fa-thumbs-up me-2"></i><span>Like</span>
+                                    </button>
+                                    <button class="action-btn" onclick="toggleComments('comments2')">
+                                        <i class="fas fa-comment me-2"></i>Comment
+                                    </button>
+                                    <button class="action-btn">
+                                        <i class="fas fa-share me-2"></i>Share
+                                    </button>
+                                </div>
+                                <div id="comments2" class="comment-section" style="display: none;">
+                                    <div class="comment-input">
+                                        <img src="https://randomuser.me/api/portraits/men/22.jpg" class="rounded-circle" width="32" height="32" alt="Profile">
+                                        <input type="text" placeholder="Write a comment..." onkeypress="addComment(event, 'comments2')">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Post 3 -->
+                            <div class="post-card">
+                                <div class="post-header">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://randomuser.me/api/portraits/women/32.jpg" class="rounded-circle me-3" width="40" height="40" alt="Profile">
+                                            <div>
+                                                <h6 class="mb-0">Mai Nguyen</h6>
+                                                <small class="text-muted">1 day ago • <i class="fas fa-globe-americas"></i></small>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown">
+                                            <button class="btn" data-bs-toggle="dropdown">
+                                                <i class="fas fa-ellipsis-h"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"><i class="fas fa-bookmark me-2"></i>Save post</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>Report post</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>Teaching my Japanese friends how to make authentic Goi Cuon (Fresh Spring Rolls) 🌿 The key is getting the rice paper just right - not too wet, not too dry. Everyone loved them! Cultural exchange through food is the best! #GoiCuon #SpringRolls #CulturalExchange #VietnameseChef</p>
+                                </div>
+                                <img src="https://www.vietnam-travelonline.com/wp-content/uploads/2023/11/50d669e4faa74612bbaed118690d6cd6-1-scaled.jpg" class="post-image" alt="Goi Cuon">
+                                <div class="post-actions">
+                                    <button class="action-btn" onclick="toggleLike(this)">
+                                        <i class="fas fa-thumbs-up me-2"></i><span>Like</span>
+                                    </button>
+                                    <button class="action-btn" onclick="toggleComments('comments3')">
+                                        <i class="fas fa-comment me-2"></i>Comment
+                                    </button>
+                                    <button class="action-btn">
+                                        <i class="fas fa-share me-2"></i>Share
+                                    </button>
+                                </div>
+                                <div id="comments3" class="comment-section" style="display: none;">
+                                    <div class="comment-input">
+                                        <img src="https://randomuser.me/api/portraits/men/22.jpg" class="rounded-circle" width="32" height="32" alt="Profile">
+                                        <input type="text" placeholder="Write a comment..." onkeypress="addComment(event, 'comments3')">
+                                    </div>
+                                    <div class="comment">
+                                        <img src="https://randomuser.me/api/portraits/women/55.jpg" class="rounded-circle" width="32" height="32" alt="Profile">
+                                        <div class="comment-content">
+                                            <div class="comment-author">Emiko Watanabe</div>
+                                            <div class="comment-text">I was there! Such a fun cooking session. Mai is an amazing teacher! 😊</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Post 4 -->
+                            <div class="post-card">
+                                <div class="post-header">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://randomuser.me/api/portraits/women/55.jpg" class="rounded-circle me-3" width="40" height="40" alt="Profile">
+                                            <div>
+                                                <h6 class="mb-0">Emiko Watanabe</h6>
+                                                <small class="text-muted">2 days ago • <i class="fas fa-globe-americas"></i></small>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown">
+                                            <button class="btn" data-bs-toggle="dropdown">
+                                                <i class="fas fa-ellipsis-h"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"><i class="fas fa-bookmark me-2"></i>Save post</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>Report post</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>Finally mastered the art of making Che Ba Mau! 🍧 Three beautiful layers representing the Vietnamese flag colors. Using Japanese premium ingredients really elevated this traditional dessert. Perfect for summer in Sendai! Recipe available on my profile. #CheBaMau #VietnameseDessert #Summer #Sendai</p>
+                                </div>
+                                <img src="https://www.simplyrecipes.com/thmb/hGF_Oyd0R22nOGcKYpwp3nS_Pcg=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Simply-Recipes-Che-Ba-Mau-LEAD-2-c6162830ea634fa5ae0fab2d21276378.jpg" class="post-image" alt="Che Ba Mau">
+                                <div class="post-actions">
+                                    <button class="action-btn" onclick="toggleLike(this)">
+                                        <i class="fas fa-thumbs-up me-2"></i><span>Like</span>
+                                    </button>
+                                    <button class="action-btn" onclick="toggleComments('comments4')">
+                                        <i class="fas fa-comment me-2"></i>Comment
+                                    </button>
+                                    <button class="action-btn">
+                                        <i class="fas fa-share me-2"></i>Share
+                                    </button>
+                                </div>
+                                <div id="comments4" class="comment-section" style="display: none;">
+                                    <div class="comment-input">
+                                        <img src="https://randomuser.me/api/portraits/men/22.jpg" class="rounded-circle" width="32" height="32" alt="Profile">
+                                        <input type="text" placeholder="Write a comment..." onkeypress="addComment(event, 'comments4')">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Sidebar -->
+                    <div class="col-lg-3 d-none d-lg-block">
+                        <div class="right-sidebar">
+                            <!-- Online Friends -->
+                            <div class="online-friends border border-primary rounded p-3">
+                                <h6 class="mb-3">Online Friends</h6>
+                                <div class="friend-item">
+                                    <div class="friend-avatar">
+                                        <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle" width="35" height="35" alt="Friend">
+                                        <div class="online-indicator"></div>
+                                    </div>
+                                    <span>Yuki Tanaka</span>
+                                </div>
+                                <div class="friend-item">
+                                    <div class="friend-avatar">
+                                        <img src="https://randomuser.me/api/portraits/men/45.jpg" class="rounded-circle" width="35" height="35" alt="Friend">
+                                        <div class="online-indicator"></div>
+                                    </div>
+                                    <span>Hiroshi Sato</span>
+                                </div>
+                                <div class="friend-item">
+                                    <div class="friend-avatar">
+                                        <img src="https://randomuser.me/api/portraits/women/32.jpg" class="rounded-circle" width="35" height="35" alt="Friend">
+                                        <div class="online-indicator"></div>
+                                    </div>
+                                    <span>Mai Nguyen</span>
+                                </div>
+                                <div class="friend-item">
+                                    <div class="friend-avatar">
+                                        <img src="https://randomuser.me/api/portraits/women/55.jpg" class="rounded-circle" width="35" height="35" alt="Friend">
+                                        <div class="online-indicator"></div>
+                                    </div>
+                                    <span>Emiko Watanabe</span>
+                                </div>
+                                <div class="friend-item">
+                                    <div class="friend-avatar">
+                                        <img src="https://randomuser.me/api/portraits/men/35.jpg" class="rounded-circle" width="35" height="35" alt="Friend">
+                                        <div class="online-indicator"></div>
+                                    </div>
+                                    <span>Kenzo Nakamura</span>
+                                </div>
+                            </div>
+
+                            <!-- Suggested Friends -->
+                            <div class="online-friends mt-4 border border-primary rounded p-3">
+                                <h6 class="mb-3">People You May Know</h6>
+                                <div class="friend-item">
+                                    <img src="https://randomuser.me/api/portraits/women/25.jpg" class="rounded-circle me-3" width="35" height="35" alt="Friend">
+                                    <div class="flex-grow-1">
+                                        <div>Sakura Kimura</div>
+                                        <small class="text-muted">2 mutual friends</small>
+                                        <div class="mt-1">
+                                            <button class="btn btn-primary btn-sm">Add Friend</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="friend-item">
+                                    <img src="https://randomuser.me/api/portraits/men/18.jpg" class="rounded-circle me-3" width="35" height="35" alt="Friend">
+                                    <div class="flex-grow-1">
+                                        <div>Takeshi Fujiwara</div>
+                                        <small class="text-muted">5 mutual friends</small>
+                                        <div class="mt-1">
+                                            <button class="btn btn-primary btn-sm">Add Friend</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Social Network Content End -->
+
+
+        <!-- Template Javascript -->
+            <!-- Template Javascript -->
+        <script src="{% static 'js/main.js' %}"></script>
+        <script src="{% static 'js/user-avatar.js' %}"></script>
+
+        <!-- Social Network JavaScript -->
+        <script>
+            function toggleLike(button) {
+                button.classList.toggle('liked');
+                const icon = button.querySelector('i');
+                const text = button.querySelector('span');
+                
+                if (button.classList.contains('liked')) {
+                    icon.style.color = '#e74c3c';
+                    text.textContent = 'Liked';
+                    button.style.color = '#e74c3c';
+                } else {
+                    icon.style.color = '#65676b';
+                    text.textContent = 'Like';
+                    button.style.color = '#65676b';
+                }
+            }
+            
+            function toggleComments(commentsId) {
+                const commentsSection = document.getElementById(commentsId);
+                if (commentsSection.style.display === 'none' || commentsSection.style.display === '') {
+                    commentsSection.style.display = 'block';
+                } else {
+                    commentsSection.style.display = 'none';
+                }
+            }
+            
+            function addComment(event, commentsId) {
+                if (event.key === 'Enter' && event.target.value.trim() !== '') {
+                    const commentsSection = document.getElementById(commentsId);
+                    const newComment = document.createElement('div');
+                    newComment.className = 'comment';
+                    newComment.innerHTML = `
+                        <img src="{% static 'img/user/default_avatar.jpg' %}" class="rounded-circle" width="32" height="32" alt="Profile" style="object-fit: cover;">
+                        <div class="comment-content">
+                            <div class="comment-author">{{ user.username }}</div>
+                            <div class="comment-text">${event.target.value}</div>
+                        </div>
+                    `;
+                    commentsSection.appendChild(newComment);
+                    event.target.value = '';
+                }
+            }
+            
+            // Auto-resize textarea
+            document.querySelector('.create-post-input').addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+            
+            // Story carousel effect
+            document.querySelectorAll('.story-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    if (!this.classList.contains('create-story')) {
+                        // Add story view functionality here
+                        console.log('Viewing story...');
+                    }
+                });
+            });
+            
+            // Notification count animation
+            let notificationCount = 3;
+            document.getElementById('notificationDropdown').addEventListener('click', function() {
+                setTimeout(() => {
+                    const badge = this.querySelector('.badge');
+                    badge.textContent = '0';
+                    badge.style.display = 'none';
+                }, 1000);
+            });
+            
+            // Messages count animation  
+            let messageCount = 2;
+            document.getElementById('messagesDropdown').addEventListener('click', function() {
+                setTimeout(() => {
+                    const badge = this.querySelector('.badge');
+                    badge.textContent = '0'; 
+                    badge.style.display = 'none';
+                }, 1000);
+            });
+            
+            // Smooth scroll for back to top
+            document.querySelector('.back-to-top').addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        </script>
+{% endblock social-content %}

@@ -1,0 +1,440 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block about-content %}
+
+
+    <!-- Single Page Header start -->
+    <div class="container-fluid page-header py-5">
+        <h1 class="text-center text-white display-6">About Us</h1>
+    </div>
+    <!-- Single Page Header End -->
+
+    <!-- About Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-7">
+                    <h1 class="mb-4">About Vietnamese Food – Japanese Taste</h1>
+                    <p class="mb-4">Connecting traditional Vietnamese cuisine with modern Japanese ingredients to create unique culinary experiences for the Vietnamese community in Japan and food enthusiasts worldwide.</p>
+                    <div class="row g-4 text-dark mb-5">
+                        <div class="col-sm-6">
+                            <i class="fas fa-share text-primary me-2"></i>Fresh ingredients daily
+                        </div>
+                        <div class="col-sm-6">
+                            <i class="fas fa-share text-primary me-2"></i>Authentic Vietnamese recipes
+                        </div>
+                        <div class="col-sm-6">
+                            <i class="fas fa-share text-primary me-2"></i>Japanese quality standards
+                        </div>
+                        <div class="col-sm-6">
+                            <i class="fas fa-share text-primary me-2"></i>Community-driven platform
+                        </div>
+                        <div class="col-sm-6">
+                            <i class="fas fa-share text-primary me-2"></i>Recipe adaptation guides
+                        </div>
+                        <div class="col-sm-6">
+                            <i class="fas fa-share text-primary me-2"></i>Cultural bridge through food
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="position-relative">
+                        <img src="https://lh3.googleusercontent.com/proxy/bgXJr-_P-45HwyFBJjTJB2orp_epc7giEyXAiQqHSqh-Ou9qcHZkHhO7n-xR4fWS-1hz8k8NP3eW62Viv6PB3SFK0AYj7hlnHZpRXd5zlBgXV2r3_-l9ySM9MkYGKzI5SHM" class="img-fluid w-100 rounded" alt="">
+                        <div class="d-flex align-items-center justify-content-center bg-white rounded-circle position-absolute" style="width: 140px; height: 140px; top: 0; left: 0;">
+                            <h1 style="font-size: 100px;">5</h1>
+                            <div class="d-flex flex-column">
+                                <span class="h2 mb-0">Years</span>
+                                <span class="h4 text-muted mb-0">of Excellence</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+    <!-- Our Mission Start -->
+    <div class="container-fluid py-5 bg-light">
+        <div class="container py-5">
+            <div class="text-center mx-auto mb-5" style="max-width: 700px;">
+                <h1 class="display-4">Our Mission</h1>
+                <p>Bridging Vietnamese culinary traditions with Japanese ingredient innovation</p>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <div class="bg-white rounded p-5 text-center">
+                        <i class="fas fa-heart fa-3x text-primary mb-4"></i>
+                        <h4>Community Connection</h4>
+                        <p>Creating a space for Vietnamese people in Japan to share, connect, and support each other through food.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="bg-white rounded p-5 text-center">
+                        <i class="fas fa-utensils fa-3x text-primary mb-4"></i>
+                        <h4>Culinary Innovation</h4>
+                        <p>Encouraging creativity in cooking by combining Vietnamese flavors with Japanese ingredients.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="bg-white rounded p-5 text-center">
+                        <i class="fas fa-star fa-3x text-primary mb-4"></i>
+                        <h4>Quality Assurance</h4>
+                        <p>Ensuring all recipes, information, and user experiences are updated and verified for quality.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Our Mission End -->
+
+    <!-- Team Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="text-center mx-auto mb-5" style="max-width: 700px;">
+                <h1 class="display-4">Our Development Team</h1>
+                <p>Meet the passionate developers behind VietJap platform</p>
+            </div>
+            
+            <!-- Custom Team Styles -->
+            <style>
+                .team-card {
+                    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+                    border-radius: 20px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                    transition: all 0.4s ease;
+                    overflow: hidden;
+                    position: relative;
+                }
+                
+                .team-card:hover {
+                    transform: translateY(-10px);
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+                }
+                
+                .team-card::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 4px;
+                    background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+                    border-radius: 20px 20px 0 0;
+                }
+                
+                .team-avatar-container {
+                    position: relative;
+                    padding: 30px 30px 20px;
+                    text-align: center;
+                }
+                
+                .team-avatar {
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 50%;
+                    border: 5px solid #ffffff;
+                    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+                    transition: all 0.3s ease;
+                    object-fit: cover;
+                }
+                
+                .team-card:hover .team-avatar {
+                    transform: scale(1.05);
+                    box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+                }
+                
+                .team-info {
+                    padding: 0 30px 30px;
+                    text-align: center;
+                }
+                
+                .team-name {
+                    font-size: 1.4rem;
+                    font-weight: 700;
+                    color: #2c3e50;
+                    margin-bottom: 8px;
+                    transition: color 0.3s ease;
+                }
+                
+                .team-card:hover .team-name {
+                    color: #3498db;
+                }
+                
+                .team-role {
+                    color: #7f8c8d;
+                    font-weight: 600;
+                    font-size: 1rem;
+                    margin-bottom: 15px;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .team-description {
+                    color: #5a6c7d;
+                    line-height: 1.6;
+                    margin-bottom: 20px;
+                    font-size: 0.95rem;
+                }
+                
+                .team-skills {
+                    margin-bottom: 20px;
+                }
+                
+                .skill-tag {
+                    display: inline-block;
+                    background: linear-gradient(45deg, #3498db, #2ecc71);
+                    color: white;
+                    padding: 4px 10px;
+                    border-radius: 15px;
+                    font-size: 0.8rem;
+                    margin: 2px;
+                    font-weight: 500;
+                }
+                
+                .team-social {
+                    display: flex;
+                    justify-content: center;
+                    gap: 10px;
+                }
+                
+                .social-btn {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    text-decoration: none;
+                    color: white;
+                    transition: all 0.3s ease;
+                    font-size: 16px;
+                }
+                
+                .social-btn.github { background: linear-gradient(45deg, #333, #555); }
+                .social-btn.linkedin { background: linear-gradient(45deg, #0077b5, #00a0dc); }
+                .social-btn.email { background: linear-gradient(45deg, #ea4335, #fbbc05); }
+                .social-btn.portfolio { background: linear-gradient(45deg, #667eea, #764ba2); }
+                
+                .social-btn:hover {
+                    transform: translateY(-3px) scale(1.1);
+                    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+                    color: white;
+                }
+                
+                .team-stats {
+                    display: flex;
+                    justify-content: space-around;
+                    margin: 20px 0;
+                    padding: 15px 0;
+                    border-top: 1px solid #ecf0f1;
+                }
+                
+                .stat-item {
+                    text-align: center;
+                }
+                
+                .stat-number {
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                    color: #3498db;
+                    display: block;
+                }
+                
+                .stat-label {
+                    font-size: 0.8rem;
+                    color: #7f8c8d;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+            </style>
+            
+            <div class="row g-4">
+                <!-- Team Member 1: Reon Nakamura -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="team-card">
+                        <div class="team-avatar-container">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Reon Nakamura" class="team-avatar">
+                        </div>
+                        <div class="team-info">
+                            <h4 class="team-name">Reon Nakamura</h4>
+                            <p class="team-role">Lead Developer</p>
+                            <p class="team-description">Full-stack developer with 5+ years of experience. Specializes in React, Node.js and cloud architecture.</p>
+                            <div class="team-skills">
+                                <span class="skill-tag">React</span>
+                                <span class="skill-tag">Node.js</span>
+                                <span class="skill-tag">MongoDB</span>
+                                <span class="skill-tag">AWS</span>
+                            </div>
+                            <div class="team-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number">120+</span>
+                                    <span class="stat-label">Projects</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">5+</span>
+                                    <span class="stat-label">Years</span>
+                                </div>
+                            </div>
+                            <div class="team-social">
+                                <a href="#" class="social-btn github"><i class="fab fa-github"></i></a>
+                                <a href="#" class="social-btn linkedin"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="social-btn email"><i class="fas fa-envelope"></i></a>
+                                <a href="#" class="social-btn portfolio"><i class="fas fa-globe"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Team Member 2: Nguyễn Mạnh Tiến -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="team-card">
+                        <div class="team-avatar-container">
+                            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Nguyen Manh Tien" class="team-avatar">
+                        </div>
+                        <div class="team-info">
+                            <h4 class="team-name">Nguyen Manh Tien</h4>
+                            <p class="team-role">Backend Developer</p>
+                            <p class="team-description">Backend specialist with experience in API development and database optimization. Passionate about system design.</p>
+                            <div class="team-skills">
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">Django</span>
+                                <span class="skill-tag">PostgreSQL</span>
+                                <span class="skill-tag">Docker</span>
+                            </div>
+                            <div class="team-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number">80+</span>
+                                    <span class="stat-label">APIs</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">4+</span>
+                                    <span class="stat-label">Years</span>
+                                </div>
+                            </div>
+                            <div class="team-social">
+                                <a href="#" class="social-btn github"><i class="fab fa-github"></i></a>
+                                <a href="#" class="social-btn linkedin"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="social-btn email"><i class="fas fa-envelope"></i></a>
+                                <a href="#" class="social-btn portfolio"><i class="fas fa-globe"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Team Member 3: Nguyen Nhat Minh -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="team-card">
+                        <div class="team-avatar-container">
+                            <img src="https://randomuser.me/api/portraits/men/28.jpg" alt="Nguyen Nhat Minh" class="team-avatar">
+                        </div>
+                        <div class="team-info">
+                            <h4 class="team-name">Nguyen Nhat Minh</h4>
+                            <p class="team-role">UI/UX Designer</p>
+                            <p class="team-description">Creative designer specializing in user experience and interface design. Creates beautiful and user-friendly interfaces.</p>
+                            <div class="team-skills">
+                                <span class="skill-tag">Figma</span>
+                                <span class="skill-tag">Adobe XD</span>
+                                <span class="skill-tag">Sketch</span>
+                                <span class="skill-tag">Photoshop</span>
+                            </div>
+                            <div class="team-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number">200+</span>
+                                    <span class="stat-label">Designs</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">6+</span>
+                                    <span class="stat-label">Years</span>
+                                </div>
+                            </div>
+                            <div class="team-social">
+                                <a href="#" class="social-btn github"><i class="fab fa-dribbble"></i></a>
+                                <a href="#" class="social-btn linkedin"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="social-btn email"><i class="fas fa-envelope"></i></a>
+                                <a href="#" class="social-btn portfolio"><i class="fas fa-globe"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Team Member 4: Tsutsumi Kensei -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="team-card">
+                        <div class="team-avatar-container">
+                            <img src="https://randomuser.me/api/portraits/men/55.jpg" alt="Tsutsumi Kensei" class="team-avatar">
+                        </div>
+                        <div class="team-info">
+                            <h4 class="team-name">Tsutsumi Kensei</h4>
+                            <p class="team-role">DevOps Engineer</p>
+                            <p class="team-description">DevOps specialist with experience in CI/CD, cloud infrastructure and monitoring systems.</p>
+                            <div class="team-skills">
+                                <span class="skill-tag">Kubernetes</span>
+                                <span class="skill-tag">Jenkins</span>
+                                <span class="skill-tag">Terraform</span>
+                                <span class="skill-tag">Monitoring</span>
+                            </div>
+                            <div class="team-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number">50+</span>
+                                    <span class="stat-label">Deployments</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">7+</span>
+                                    <span class="stat-label">Years</span>
+                                </div>
+                            </div>
+                            <div class="team-social">
+                                <a href="#" class="social-btn github"><i class="fab fa-github"></i></a>
+                                <a href="#" class="social-btn linkedin"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="social-btn email"><i class="fas fa-envelope"></i></a>
+                                <a href="#" class="social-btn portfolio"><i class="fas fa-globe"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Team Achievement Section -->
+            <div class="row mt-5 pt-4">
+                <div class="col-12">
+                    <div class="bg-light rounded-4 p-5 text-center">
+                        <h3 class="mb-4 text-primary">Team Achievements</h3>
+                        <div class="row g-4">
+                            <div class="col-md-3 col-6">
+                                <div class="achievement-item">
+                                    <i class="fas fa-code fa-3x text-primary mb-3"></i>
+                                    <h4 class="text-primary">50,000+</h4>
+                                    <p class="text-muted">Lines of Code</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <div class="achievement-item">
+                                    <i class="fas fa-users fa-3x text-success mb-3"></i>
+                                    <h4 class="text-primary">15,000+</h4>
+                                    <p class="text-muted">Active Users</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <div class="achievement-item">
+                                    <i class="fas fa-star fa-3x text-warning mb-3"></i>
+                                    <h4 class="text-primary">4.9/5</h4>
+                                    <p class="text-muted">User Rating</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <div class="achievement-item">
+                                    <i class="fas fa-trophy fa-3x text-danger mb-3"></i>
+                                    <h4 class="text-primary">3</h4>
+                                    <p class="text-muted">Tech Awards</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Team End -->
+
+{% endblock about-content %}

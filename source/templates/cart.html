@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block cart-content %}
+
+
+
+        <!-- Single Page Header start -->
+        <div class="container-fluid page-header py-5">
+            <h1 class="text-center text-white display-6">Cart</h1>
+        </div>
+        <!-- Single Page Header End -->
+
+
+        <!-- Cart Page Start -->
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Products</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Handle</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cartDetails %}
+                            <tr>
+                                <th scope="row">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ item.ingredient.ImageURL }}" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="">
+                                    </div>
+                                </th>
+                                <td>
+                                    <p class="mb-0 mt-4">{{ item.ingredient.name }}</p>
+                                </td>
+                                <td>
+                                    <p class="mb-0 mt-4">{{ item.ingredient.price }} $</p>
+                                </td>
+                                <td>
+                                    <div class="input-group quantity mt-4" style="width: 100px;">
+
+
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-minus rounded-circle bg-light border update-cart"
+                                            data-ingredient-id="{{ item.ingredient.id }}" data-action="remove">
+                                            <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+
+
+                                        <input type="text" class="form-control form-control-sm text-center border-0" value="{{ item.quantity }}">
+
+
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-plus rounded-circle bg-light border update-cart"
+                                            data-ingredient-id="{{ item.ingredient.id }}" data-action="add">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p class="mb-0 mt-4">{{ item.get_total_price }} $</p>
+                                </td>
+                                <td>
+                                    <button class="btn btn-md rounded-circle bg-light border mt-4" >
+                                        <i class="fa fa-times text-danger"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="row g-4 mt-5 justify-content-start">
+                
+                    <div class="col-12 col-md-8">
+                        <div class="bg-light rounded">
+                            <div class="p-4">
+                                <h1 class="display-6 mb-4">Cart <span class="fw-normal">Total</span></h1>
+                                <div class="d-flex justify-content-between mb-4">
+                                    <h5 class="mb-0 me-4">Subtotal:</h5>
+                                    <p class="mb-0" id="cart-subtotal">${{ totalPrice }}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="mb-0 me-4">Shipping</h5>
+                                    <div class="">
+                                        <p class="mb-0">Flat rate: $0.00</p>
+                                    </div>
+                                </div>
+                                <p class="mb-0 text-end">Free Shipping </p>
+                            </div>
+                                <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                                    <h5 class="mb-0 ps-4 me-4">Total</h5>
+                                    <p class="mb-0 pe-4" id="cart-total">${{ totalPrice  }}</p>
+                                </div>
+                            <a href="{% url 'checkout' %}" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4">Proceed Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Cart Page End -->
+
+
+        <script>
+            // Cập nhật số lượng động mà không reload trang
+            document.addEventListener('DOMContentLoaded', function() {
+                const updateButtons = document.querySelectorAll('.update-cart');
+                updateButtons.forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const ingredientId = this.dataset.ingredientId;
+                        const action = this.dataset.action;
+                        updateCartItem(ingredientId, action, this);
+                    });
+                });
+            });
+
+            function updateCartItem(ingredientId, action, buttonElement) {
+                const url = '/cart/update_item/';
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify({
+                        'ingredientId': ingredientId,
+                        'action': action
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.status === 'success') {
+                        const row = buttonElement.closest('tr');
+                        
+                        if(data.item_deleted) {
+                            // Xóa hàng nếu số lượng = 0
+                            row.remove();
+                        } else {
+                            // Cập nhật số lượng và tổng tiền từ server
+                            const quantityInput = row.querySelector('input[type="text"]');
+                            const totalCell = row.querySelector('td:nth-child(5) p');
+                            
+                            quantityInput.value = data.new_quantity;
+                            // Đảm bảo format tiền tệ đúng với 2 chữ số thập phân
+                            totalCell.textContent = '$' + parseFloat(data.item_total).toFixed(2);
+                        }
+                        
+                        // Cập nhật tổng tiền giỏ hàng từ server
+                        updateCartTotalFromServer(data.cart_total);
+                        
+                        // Cập nhật số lượng trên navbar
+                        updateNavbarCartFromServer(data.cart_items);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            
+            function updateCartTotalFromServer(cartTotal) {
+                // Cập nhật subtotal với format đúng
+                const subtotalElement = document.getElementById('cart-subtotal');
+                if(subtotalElement) {
+                    subtotalElement.textContent = '$' + parseFloat(cartTotal).toFixed(2);
+                }
+                // Cập nhật total (subtotal + shipping) với format đúng
+                const totalElement = document.getElementById('cart-total');
+                if(totalElement) {
+                    const shipping = 0.00; // Nếu có phí ship, thay đổi giá trị này
+                    totalElement.textContent = '$' + (parseFloat(cartTotal) + shipping).toFixed(2);
+                }
+            }
+            
+            function updateNavbarCartFromServer(cartItems) {
+                // Cập nhật số lượng trên icon giỏ hàng trong navbar
+                const cartIcon = document.querySelector('.position-relative .position-absolute');
+                if(cartIcon) {
+                    cartIcon.textContent = cartItems;
+                }
+            }
+            
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        </script>
+
+
+{% endblock cart-content %}

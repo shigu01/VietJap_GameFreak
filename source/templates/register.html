@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Register</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet"> 
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Template Stylesheet -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <style>
+        body {
+            background: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+        .register-container {
+            max-width: 440px;
+            margin: 60px auto 0 auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+            padding: 36px 32px 28px 32px;
+        }
+        .register-title {
+            font-family: 'Raleway', Arial, sans-serif;
+            font-weight: 700;
+            color: #4267B2;
+            font-size: 2rem;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        .register-form .form-control {
+            border-radius: 12px;
+            font-size: 1.1rem;
+            margin-bottom: 18px;
+            padding: 12px 16px;
+        }
+        .register-form .btn-primary {
+            background: #81c408;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 10px 0;
+            transition: background 0.2s;
+        }
+        .register-form .btn-primary:hover {
+            background: #6db106;
+        }
+        .register-form .form-text {
+            color: #888;
+            font-size: 0.97em;
+        }
+        .register-social {
+            margin-top: 18px;
+            text-align: center;
+        }
+        .register-social .btn {
+            margin: 0 6px;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+        .register-link {
+            margin-top: 18px;
+            text-align: center;
+        }
+        .register-link a {
+            color: #4267B2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        @media (max-width: 500px) {
+            .register-container {
+                margin: 20px auto 0 auto;
+                padding: 24px 20px 18px 20px;
+                border-radius: 12px;
+            }
+        }
+        
+        @media (min-height: 800px) {
+            .register-container {
+                margin: 100px auto 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container" style="margin-top: 100px;">
+        <div class="text-center mb-3">
+            <a href="{% url 'home' %}" class="text-decoration-none" style="color: #81c408; font-size: 0.9rem;">
+                <i class="fas fa-arrow-left me-2"></i>Back to Home
+            </a>
+        </div>
+        <div class="register-title">Create Account</div>
+        <form class="register-form" method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+            <input type="text" name="username" class="form-control" placeholder="Username" required>
+            <input type="password" name="password" class="form-control" placeholder="Password" required>
+            <input type="password" name="password_confirm" class="form-control" placeholder="Confirm Password" required>
+            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                        {% if msg %}
+                            <div class="alert alert-danger mt-3">{{ msg }}</div>
+                        {% endif %}
+            <div class="form-text mt-2 text-center">Or sign up with</div>
+            <div class="register-social">
+                <button type="button" class="btn btn-outline-primary" title="Facebook"><i class="fab fa-facebook-f"></i></button>
+                <button type="button" class="btn btn-outline-danger" title="Google"><i class="fab fa-google"></i></button>
+                <button type="button" class="btn btn-outline-dark" title="Apple"><i class="fab fa-apple"></i></button>
+            </div>
+            <div class="register-link">
+                <span>Already have an account? <a href="{% url 'login' %}">Sign In</a></span>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
