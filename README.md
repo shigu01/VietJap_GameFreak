@@ -136,19 +136,13 @@ cd source
 pip install -r requirements.txt
 ```
 
-### 4. データベースを作成
-
-```bash
-python manage.py migrate
-```
-
-### 5. 開発用サーバーを起動
+### 4. 開発用サーバーを起動
 
 ```bash
 python manage.py runserver
 ```
 
-### 6. ブラウザからアクセス
+### 5. ブラウザからアクセス
 
 表示されたURLにブラウザからアクセスしてください。
 
@@ -162,19 +156,19 @@ VietJap_GameFreak/
 ├── summary.pdf
 ├── movie/
 │   └── VietJap_demo.mp4
-├── source/
-│   ├── accounts/
-│   ├── cart/
-│   ├── dish/
-│   ├── home/
-│   ├── myproject/
-│   ├── order/
-│   ├── social/
-│   ├── static/
-│   ├── templates/
-│   ├── manage.py
-│   └── requirements.txt
-└── bin/
+└── source/
+    ├── accounts/
+    ├── cart/
+    ├── dish/
+    ├── home/
+    ├── myproject/
+    ├── order/
+    ├── social/
+    ├── static/
+    ├── templates/
+    ├── manage.py
+    └── requirements.txt
+
 ```
 
 ---
