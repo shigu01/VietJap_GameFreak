@@ -97,11 +97,12 @@
 
 ## 7. デモ動画
 
-作品の動作を紹介する動画を以下に掲載しています。
+作品の動作を紹介する動画は以下よりダウンロードできます。
 
 **デモ動画：**
 
 `movie/VietJap_demo.mp4`
+(https://github.com/shigu01/VietJap_GameFreak/raw/refs/heads/main/movie/VietJap_demo.mp4)
 
 
 ---
